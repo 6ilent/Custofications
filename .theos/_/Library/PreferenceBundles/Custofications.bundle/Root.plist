@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>items</key>
+	<array>
+
+		<dict>
+			<key>cell</key><string>PSSwitchCell</string>
+			<key>default</key><false/>
+			<key>defaults</key><string>com.6ilent.custofications</string>
+			<key>label</key><string>Enable Me!</string>
+			<key>key</key><string>enabled</string>
+			<key>PostNotification</key><string>com.6ilent.custofications/ReloadPrefs</string>
+		</dict>
+
+		<dict>
+			<key>action</key><string>testNotifications:</string>
+			<key>cell</key><string>PSButtonCell</string>
+			<key>label</key><string>Test Notification</string>
+		</dict>
+
+		<dict>
+			<key>action</key><string>testBanner:</string>
+			<key>cell</key><string>PSButtonCell</string>
+			<key>label</key><string>Test Banner</string>
+		</dict>
+
+	</array>
+	<key>title</key>
+	<string>Custofications</string>
+</dict>
+</plist>

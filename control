@@ -1,0 +1,9 @@
+Package: com.6ilent.custofications
+Name: Custofications
+Depends: mobilesubstrate, firmware (>= 13.0), preferenceloader
+Version: 1.0.0
+Architecture: iphoneos-arm
+Description: Custom notifications
+Maintainer: 6ilent <pkmnx7802@gmail.com>
+Author: 6ilent <pkmnx7802@gmail.com>
+Section: Tweaks
