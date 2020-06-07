@@ -1,14 +1,15 @@
 ARCHS = arm64 arm64e
+TARGET = iphone:clang:12.1:12.1
 
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = Custofications
 
-Custofications_FILES = CSTRootListController.m
+Custofications_FILES = CSTRootListController.m AppearanceSettings.m
 Custofications_INSTALL_PATH = /Library/PreferenceBundles
 Custofications_FRAMEWORKS = UIKit
 Custofications_PRIVATE_FRAMEWORKS = Preferences
-Custofications_CFLAGS = -fobjc-arc
+Custofications_EXTRA_FRAMEWORKS = Cephei CepheiPrefs
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 

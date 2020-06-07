@@ -40,8 +40,6 @@ static void fakeNotification(NSString *sectionID, NSDate *date, NSString *messag
                 [bbServer publishBulletin:bulletin destinations:15];
             });
         }
-        // SBLockScreenNotificationListController *listController=([[%c(UIApplication) sharedApplication] respondsToSelector:@selector(notificationDispatcher)] && [[[%c(UIApplication) sharedApplication] notificationDispatcher] respondsToSelector:@selector(notificationSource)]) ? [[[%c(UIApplication) sharedApplication] notificationDispatcher] notificationSource]  : [[[%c(SBLockScreenManager) sharedInstanceIfExists] lockScreenViewController] valueForKey:@"notificationController"];
-        // [listController observer:[listController valueForKey:@"observer"] addBulletin:bulletin forFeed:14];
     } else {
         if ([bbServer respondsToSelector:@selector(publishBulletin:destinations:alwaysToLockScreen:)]) {
             dispatch_sync(getBBServerQueue(), ^{
@@ -102,6 +100,6 @@ void CSTTestBanner() {
 %end
 
 %ctor {
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)CSTTestNotifications, (CFStringRef)@"com.6ilent.custofications/TestNotifications", NULL, (CFNotificationSuspensionBehavior)kNilOptions);
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)CSTTestBanner, (CFStringRef)@"com.6ilent.custofications/TestBanner", NULL, (CFNotificationSuspensionBehavior)kNilOptions);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)CSTTestNotifications, (CFStringRef)@"com.6ilent.custofications/sendNotifications", NULL, (CFNotificationSuspensionBehavior)kNilOptions);
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)CSTTestBanner, (CFStringRef)@"com.6ilent.custofications/sendBanner", NULL, (CFNotificationSuspensionBehavior)kNilOptions);
 }

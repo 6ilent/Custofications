@@ -1,6 +1,6 @@
 Package: com.6ilent.custofications
 Name: Custofications
-Depends: mobilesubstrate, firmware (>= 13.0), preferenceloader
+Depends: mobilesubstrate, firmware (>= 13.0), preferenceloader, ws.hbang.common (>= 1.11)
 Version: 1.0.0
 Architecture: iphoneos-arm
 Description: Custom notifications
