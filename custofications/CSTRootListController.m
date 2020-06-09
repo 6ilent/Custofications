@@ -122,6 +122,13 @@
     self.headerImageView.frame = CGRectMake(0, offsetY, self.headerView.frame.size.width, 200 - offsetY);
 }
 
+- (void)resetPrefs:(id)sender {
+  HBPreferences *prefs = [[HBPreferences alloc] initWithIdentifier:@"com.6ilent.custofications"];
+  [prefs removeAllObjects];
+
+  [self respring:sender];
+}
+
 - (void)respring:(id)sender {
     NSTask *t = [[[NSTask alloc] init] autorelease];
     [t setLaunchPath:@"/usr/bin/killall"];

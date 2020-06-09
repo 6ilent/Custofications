@@ -1,5 +1,14 @@
 #import "Tweak.h"
 
+#define kIdentifier @"com.6ilent.custofications"
+#define kSettingsChangedNotification (CFStringRef)@"com.6ilent.custofications/ReloadPrefs"
+#define kSettingsPath @"/var/mobile/Library/Preferences/com.6ilent.custofications.plist"
+
+
+static BOOL cstEnabled;
+static NSString *cstID;
+static NSString *cstTitle;
+static NSString *cstMessage;
 static BBServer *bbServer = nil;
 
 static dispatch_queue_t getBBServerQueue() {
@@ -21,7 +30,7 @@ static dispatch_queue_t getBBServerQueue() {
 static void fakeNotification(NSString *sectionID, NSDate *date, NSString *message, bool banner) {
     BBBulletin *bulletin = [[%c(BBBulletin) alloc] init];
 
-    bulletin.title = @"Custofication";
+    bulletin.title = cstTitle;
     bulletin.message = message;
     bulletin.sectionID = sectionID;
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -57,26 +66,24 @@ void CSTTestNotifications() {
     [[%c(SBLockScreenManager) sharedInstance] lockUIFromSource:1 withOptions:nil];
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 1!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 2!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 3!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 4!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 5!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 6!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 7!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 8!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 9!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 10!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 11!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 12!", false);
-        fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test notification 13!", false);
-        fakeNotification(@"com.apple.Music", [NSDate date], @"Test notification 14!", false);
-        fakeNotification(@"com.apple.mobilephone", [NSDate date], @"Test notification 15!", false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
+        fakeNotification(cstID, [NSDate date], cstMessage, false);
     });
 }
 
 void CSTTestBanner() {
-    fakeNotification(@"com.apple.MobileSMS", [NSDate date], @"Test banner!", true);
+    fakeNotification(cstID, [NSDate date], cstMessage, true);
 }
 
 %hook BBServer
@@ -99,7 +106,35 @@ void CSTTestBanner() {
 }
 %end
 
+static void reloadPrefs() {
+  CFPreferencesAppSynchronize((CFStringRef)kIdentifier);
+
+  NSDictionary *prefs = nil;
+  if ([NSHomeDirectory() isEqualToString:@"/var/mobile"]) {
+    CFArrayRef keys = CFPreferencesCopyKeyList((CFStringRef)kIdentifier, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+
+    if (keys != nil) {
+      prefs = (NSDictionary *)CFBridgingRelease(CFPreferencesCopyMultiple(keys, (CFStringRef)kIdentifier, kCFPreferencesCurrentUser, kCFPreferencesAnyHost));
+
+      if (prefs == nil) {
+        prefs = [NSDictionary dictionary];
+      }
+      CFRelease(keys);
+    }
+  } else {
+    prefs = [NSDictionary dictionaryWithContentsOfFile:kSettingsPath];
+  }
+
+  cstEnabled = [prefs objectForKey:@"cstEnabled"] ? [(NSNumber *)[prefs objectForKey:@"cstEnabled"] boolValue] : true;
+  cstID = [prefs objectForKey:@"cstID"] ? [[prefs objectForKey:@"cstID"] stringValue] : @"com.apple.Preferences";
+  cstTitle = [prefs objectForKey:@"cstTitle"] ? [[prefs objectForKey:@"cstTitle"] stringValue] : @"Title";
+  cstMessage = [prefs objectForKey:@"cstMessage"] ? [[prefs objectForKey:@"cstMessage"] stringValue] : @"Hello World!";
+}
+
 %ctor {
+    reloadPrefs();
+    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, kSettingsChangedNotification, NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
+
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)CSTTestNotifications, (CFStringRef)@"com.6ilent.custofications/sendNotifications", NULL, (CFNotificationSuspensionBehavior)kNilOptions);
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)CSTTestBanner, (CFStringRef)@"com.6ilent.custofications/sendBanner", NULL, (CFNotificationSuspensionBehavior)kNilOptions);
 }

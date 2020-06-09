@@ -20,6 +20,7 @@
 @property (nonatomic, retain) UIImageView *headerImageView;
 @property (nonatomic, retain) UILabel *titleLabel;
 @property (nonatomic, retain) UIImageView *iconView;
+- (void)resetPrefs:(id)sender;
 - (void)respring:(id)sender;
 
 @end
