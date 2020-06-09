@@ -83,7 +83,7 @@ void CSTTestNotifications() {
 }
 
 void CSTTestBanner() {
-    fakeNotification(cstID, [NSDate date], cstMessage, true);
+    fakeNotification(@"huh", [NSDate date], @"yes", true);
 }
 
 %hook BBServer

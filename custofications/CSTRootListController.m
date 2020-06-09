@@ -1,4 +1,5 @@
 #include "CSTRootListController.h"
+#include "AppearanceSettings.m"
 
 @implementation CSTRootListController
 @synthesize respringButton;
@@ -52,6 +53,15 @@
         _specifiers = [[self loadSpecifiersFromPlistName:@"Root" target:self] retain];
     }
     return _specifiers;
+}
+
+- (void)loadView {
+    [super loadView];
+    ((UITableView *)[self table]).keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+}
+
+-(void)_returnKeyPressed:(id)arg1 {
+    [self.view endEditing:YES];
 }
 
 - (void)viewDidLoad {
