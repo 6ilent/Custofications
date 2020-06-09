@@ -1,11 +1,11 @@
 ARCHS = arm64 arm64e
-TARGET = iphone:clang:11.2:latest
+TARGET = iphone:clang:11.2:11.2
 
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = Custofications
 
-Custofications_FILES = CSTRootListController.m AppearanceSettings.m
+Custofications_FILES = CSTRootListController.m
 Custofications_INSTALL_PATH = /Library/PreferenceBundles
 Custofications_FRAMEWORKS = UIKit
 Custofications_PRIVATE_FRAMEWORKS = Preferences
