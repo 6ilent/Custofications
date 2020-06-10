@@ -22,5 +22,7 @@
 @property (nonatomic, retain) UIImageView *iconView;
 - (void)resetPrefs:(id)sender;
 - (void)respring:(id)sender;
+- (void)sendNotifications:(id)sender;
+- (void)sendBanner:(id)sender;
 
 @end

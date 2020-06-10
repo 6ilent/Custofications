@@ -1,3 +1,5 @@
+THEOS_DEVICE_IP = 10.0.0.98
+
 ARCHS = arm64 arm64e
 TARGET = iphone:clang:11.2:11.2
 

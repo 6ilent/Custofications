@@ -63,27 +63,19 @@ static void fakeNotification(NSString *sectionID, NSDate *date, NSString *messag
 }
 
 void CSTTestNotifications() {
-    [[%c(SBLockScreenManager) sharedInstance] lockUIFromSource:1 withOptions:nil];
+    if (cstEnabled) {
+        [[%c(SBLockScreenManager) sharedInstance] lockUIFromSource:1 withOptions:nil];
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-        fakeNotification(cstID, [NSDate date], cstMessage, false);
-    });
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            fakeNotification(cstID, [NSDate date], cstMessage, false);
+        });
+    }
 }
 
 void CSTTestBanner() {
-    fakeNotification(@"huh", [NSDate date], @"yes", true);
+    if (cstEnabled) {
+        fakeNotification(cstID, [NSDate date], cstMessage, true);
+    }
 }
 
 %hook BBServer

@@ -146,4 +146,12 @@
     [t launch];
 }
 
+- (void)sendNotifications:(id)sender {
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)@"com.6ilent.custofications/sendNotifications", nil, nil, true);
+}
+
+- (void)sendBanner:(id)sender {
+    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)@"com.6ilent.custofications/sendBanner", nil, nil, true);
+}
+
 @end
