@@ -6,7 +6,7 @@
 
 
 static BOOL cstEnabled;
-static NSString *cstID;
+static NSString *cstApp;
 static NSString *cstTitle;
 static NSString *cstMessage;
 static BBServer *bbServer = nil;
@@ -67,14 +67,14 @@ void CSTTestNotifications() {
         [[%c(SBLockScreenManager) sharedInstance] lockUIFromSource:1 withOptions:nil];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            fakeNotification(cstID, [NSDate date], cstMessage, false);
+            fakeNotification(cstApp, [NSDate date], cstMessage, false);
         });
     }
 }
 
 void CSTTestBanner() {
     if (cstEnabled) {
-        fakeNotification(cstID, [NSDate date], cstMessage, true);
+        fakeNotification(cstApp, [NSDate date], cstMessage, true);
     }
 }
 
@@ -118,7 +118,7 @@ static void reloadPrefs() {
   }
 
   cstEnabled = [prefs objectForKey:@"cstEnabled"] ? [(NSNumber *)[prefs objectForKey:@"cstEnabled"] boolValue] : true;
-  cstID = [prefs objectForKey:@"cstID"] ? [[prefs objectForKey:@"cstID"] stringValue] : @"com.apple.Preferences";
+  cstApp = [prefs objectForKey:@"cstApp"] ? [[prefs objectForKey:@"cstApp"] stringValue] : @"com.apple.Preferences";
   cstTitle = [prefs objectForKey:@"cstTitle"] ? [[prefs objectForKey:@"cstTitle"] stringValue] : @"Title";
   cstMessage = [prefs objectForKey:@"cstMessage"] ? [[prefs objectForKey:@"cstMessage"] stringValue] : @"Hello World!";
 }
