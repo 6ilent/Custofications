@@ -1,17 +1,22 @@
+//Imports our headers
 #import "Tweak.h"
 
+//Definitions for our preference observers
 #define kIdentifier @"com.6ilent.custofications"
 #define kSettingsChangedNotification (CFStringRef)@"com.6ilent.custofications/ReloadPrefs"
 #define kSettingsPath @"/var/mobile/Library/Preferences/com.6ilent.custofications.plist"
 
-
+//Our preference variables
 static BOOL cstEnabled;
 static NSString *cstApp;
 static NSInteger cstAmount;
 static NSString *cstTitle;
 static NSString *cstMessage;
+
+//Our BBServer variable
 static BBServer *bbServer = nil;
 
+//gets the queue to our BBServer
 static dispatch_queue_t getBBServerQueue() {
 	static dispatch_queue_t queue;
 	static dispatch_once_t predicate;
@@ -28,6 +33,7 @@ static dispatch_queue_t getBBServerQueue() {
 	return queue;
 }
 
+//handler method for our fakes, it loads everything into BBBulletin
 static void fakeNotification(NSString *sectionID, NSDate *date, NSString *message, bool banner) {
     BBBulletin *bulletin = [[%c(BBBulletin) alloc] init];
 
@@ -44,6 +50,7 @@ static void fakeNotification(NSString *sectionID, NSDate *date, NSString *messag
     bulletin.publicationDate = date;
     bulletin.lastInterruptDate = date;
 
+    //If the banner variable then send as a banner if not then send it to the lockscreen
     if (banner) {
         if ([bbServer respondsToSelector:@selector(publishBulletin:destinations:)]) {
             dispatch_sync(getBBServerQueue(), ^{
@@ -63,6 +70,7 @@ static void fakeNotification(NSString *sectionID, NSDate *date, NSString *messag
     }
 }
 
+//method that sends our fake notification IF the tweak is enabled and for the set amount of times
 void CSTTestNotifications() {
     if (cstEnabled) {
         [[%c(SBLockScreenManager) sharedInstance] lockUIFromSource:1 withOptions:nil];
@@ -75,6 +83,7 @@ void CSTTestNotifications() {
     }
 }
 
+//method that sends our fake banner IF the tweak is enabled and for the set amount of times
 void CSTTestBanner() {
     if (cstEnabled) {
         for (int i = 0; i < cstAmount; i++) {
@@ -83,6 +92,7 @@ void CSTTestBanner() {
     }
 }
 
+//Hooks bbserver and adds its data to our bbserver variable so we can play with it, kind of magic?
 %hook BBServer
 -(id)initWithQueue:(id)arg1 {
     bbServer = %orig;
@@ -103,7 +113,9 @@ void CSTTestBanner() {
 }
 %end
 
+//Method that loads the prefs
 static void reloadPrefs() {
+  //Fancy magic
   CFPreferencesAppSynchronize((CFStringRef)kIdentifier);
 
   NSDictionary *prefs = nil;
@@ -122,6 +134,7 @@ static void reloadPrefs() {
     prefs = [NSDictionary dictionaryWithContentsOfFile:kSettingsPath];
   }
 
+  //registers our preferences to variables in our tweak so we can use them
   cstEnabled = [prefs objectForKey:@"cstEnabled"] ? [(NSNumber *)[prefs objectForKey:@"cstEnabled"] boolValue] : true;
   cstApp = [prefs objectForKey:@"cstApp"] ? [[prefs objectForKey:@"cstApp"] stringValue] : @"com.apple.Preferences";
   cstAmount = [prefs objectForKey:@"cstAmount"] ? [[prefs objectForKey:@"cstAmount"] integerValue] : 1;
@@ -129,6 +142,10 @@ static void reloadPrefs() {
   cstMessage = [prefs objectForKey:@"cstMessage"] ? [[prefs objectForKey:@"cstMessage"] stringValue] : @"Hello World!";
 }
 
+/*Initial loading point for the tweak
+  -reloads the preferences
+  -sets up observers for when the preferences change and for when the preferences send the action to send the banner/notification
+*/
 %ctor {
     reloadPrefs();
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)reloadPrefs, kSettingsChangedNotification, NULL, CFNotificationSuspensionBehaviorDeliverImmediately);
