@@ -7,6 +7,7 @@
 
 static BOOL cstEnabled;
 static NSString *cstApp;
+static NSInteger cstAmount;
 static NSString *cstTitle;
 static NSString *cstMessage;
 static BBServer *bbServer = nil;
@@ -67,14 +68,18 @@ void CSTTestNotifications() {
         [[%c(SBLockScreenManager) sharedInstance] lockUIFromSource:1 withOptions:nil];
 
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            fakeNotification(cstApp, [NSDate date], cstMessage, false);
+            for (int o = 0; o < cstAmount; o++) {
+              fakeNotification(cstApp, [NSDate date], cstMessage, false);
+            }
         });
     }
 }
 
 void CSTTestBanner() {
     if (cstEnabled) {
-        fakeNotification(cstApp, [NSDate date], cstMessage, true);
+        for (int i = 0; i < cstAmount; i++) {
+          fakeNotification(cstApp, [NSDate date], cstMessage, true);
+        }
     }
 }
 
@@ -119,6 +124,7 @@ static void reloadPrefs() {
 
   cstEnabled = [prefs objectForKey:@"cstEnabled"] ? [(NSNumber *)[prefs objectForKey:@"cstEnabled"] boolValue] : true;
   cstApp = [prefs objectForKey:@"cstApp"] ? [[prefs objectForKey:@"cstApp"] stringValue] : @"com.apple.Preferences";
+  cstAmount = [prefs objectForKey:@"cstAmount"] ? [[prefs objectForKey:@"cstAmount"] integerValue] : 1;
   cstTitle = [prefs objectForKey:@"cstTitle"] ? [[prefs objectForKey:@"cstTitle"] stringValue] : @"Title";
   cstMessage = [prefs objectForKey:@"cstMessage"] ? [[prefs objectForKey:@"cstMessage"] stringValue] : @"Hello World!";
 }

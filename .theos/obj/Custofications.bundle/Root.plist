@@ -33,14 +33,43 @@
 			<key>label</key><string>Customize me!</string>
 		</dict>
 		<dict>
-			<key>cell</key><string>PSEditTextCell</string>
-			<key>default</key><string>com.apple.Preferences</string>
-			<key>defaults</key><string>com.6ilent.custofications</string>
-			<key>detail</key><string>PSDetailController</string>
-			<key>key</key><string>cstID</string>
-			<key>label</key><string>Bundle ID:</string>
-			<key>placeholder</key><string>com.xxx.yyyy</string>
-			<key>PostNotification</key><string>com.6ilent.custofications/ReloadPrefs</string>
+			<key>bundle</key><string>AppList</string>
+			<key>cell</key><string>PSLinkCell</string>
+			<key>isController</key><true/>
+			<key>label</key><string>Application</string>
+			<key>ALSingleEnabledMode</key><true/>
+			<key>ALSettingsKey</key><string>cstApp</string>
+			<key>ALChangeNotification</key><string>com.6ilent.custofications/ReloadPrefs</string>
+			<key>ALSettingsPath</key><string>/var/mobile/Library/Preferences/com.6ilent.custofications.plist</string>
+			<key>ALSectionDescriptors</key>
+			<array>
+				<dict>
+					<key>title</key><string>System Applications</string>
+					<key>predicate</key><string>isSystemApplication = TRUE</string>
+					<key>icon-size</key><real>29</real>
+					<key>suppress-hidden-apps</key><true/>
+					<key>cell-class-name</key><string>ALCheckCell</string>
+				</dict>
+				<dict>
+					<key>title</key><string>User Applications</string>
+					<key>predicate</key><string>isSystemApplication = FALSE</string>
+					<key>icon-size</key><real>29</real>
+					<key>suppress-hidden-apps</key><true/>
+					<key>cell-class-name</key><string>ALCheckCell</string>
+					<key>footer-title</key><string>Custofications by 6ilent</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+		    <key>cellClass</key><string>HBStepperTableCell</string>
+		    <key>default</key><real>1</real>
+		    <key>defaults</key><string>com.6ilent.custofications</string>
+		    <key>key</key><string>cstAmount</string>
+		    <key>label</key><string>%i Notifications</string>
+		    <key>max</key><real>15</real>
+		    <key>min</key><real>1</real>
+		    <key>singularLabel</key><string>1 Notification</string>
+		    <key>PostNotification</key><string>com.6ilent.custofications/ReloadPrefs</string>
 		</dict>
 		<dict>
 			<key>cell</key><string>PSEditTextCell</string>
@@ -65,17 +94,17 @@
 
 		<dict>
 			<key>cell</key><string>PSGroupCell</string>
-			<key>label</key><string>Test me!</string>
+			<key>label</key><string>Try me!</string>
 		</dict>
 		<dict>
 			<key>action</key><string>sendNotifications:</string>
 			<key>cell</key><string>PSButtonCell</string>
-			<key>label</key><string>Test Notification</string>
+			<key>label</key><string>Send Notification</string>
 		</dict>
 		<dict>
 			<key>action</key><string>sendBanner:</string>
 			<key>cell</key><string>PSButtonCell</string>
-			<key>label</key><string>Test Banner</string>
+			<key>label</key><string>Send Banner</string>
 		</dict>
 
 
