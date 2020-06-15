@@ -11,10 +11,15 @@
 
 @end
 
+@interface PSListController (iOS12Plus)
+-(BOOL)containsSpecifier:(id)arg1;
+@end
+
 @interface CSTRootListController : HBRootListController {
     UITableView * _table;
 }
 
+@property (nonatomic, retain) NSMutableDictionary *savedSpecifiers;
 @property (nonatomic, retain) UIBarButtonItem *respringButton;
 @property (nonatomic, retain) UIView *headerView;
 @property (nonatomic, retain) UIImageView *headerImageView;

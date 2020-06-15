@@ -11,6 +11,7 @@ static BOOL cstEnabled;
 static NSString *cstApp;
 static NSInteger cstAmount;
 static NSString *cstTitle;
+static NSString *cstSubTitle;
 static NSString *cstMessage;
 
 //Our BBServer variable
@@ -38,6 +39,7 @@ static void fakeNotification(NSString *sectionID, NSDate *date, NSString *messag
     BBBulletin *bulletin = [[%c(BBBulletin) alloc] init];
 
     bulletin.title = cstTitle;
+    bulletin.subtitle = cstSubTitle;
     bulletin.message = message;
     bulletin.sectionID = sectionID;
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -139,6 +141,7 @@ static void reloadPrefs() {
   cstApp = [prefs objectForKey:@"cstApp"] ? [[prefs objectForKey:@"cstApp"] stringValue] : @"com.apple.Preferences";
   cstAmount = [prefs objectForKey:@"cstAmount"] ? [[prefs objectForKey:@"cstAmount"] integerValue] : 1;
   cstTitle = [prefs objectForKey:@"cstTitle"] ? [[prefs objectForKey:@"cstTitle"] stringValue] : @"Title";
+  cstSubTitle = [prefs objectForKey:@"cstSubTitle"] ? [[prefs objectForKey:@"cstSubTitle"] stringValue] : @"Sub Title";
   cstMessage = [prefs objectForKey:@"cstMessage"] ? [[prefs objectForKey:@"cstMessage"] stringValue] : @"Hello World!";
 }
 
